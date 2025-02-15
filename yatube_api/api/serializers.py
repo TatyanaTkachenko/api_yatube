@@ -5,7 +5,7 @@ from posts.models import Post, Group, Comment
 
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
-        read_only=True, 
+        read_only=True,
         slug_field='username'
     )
 
@@ -30,4 +30,4 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
         read_only_fields = ['post']
-        
+
