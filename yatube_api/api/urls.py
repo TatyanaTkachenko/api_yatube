@@ -8,7 +8,9 @@ API_VERSION = 'v1'
 router_v1 = DefaultRouter()
 router_v1.register(r'posts', PostViewSet, basename='post')
 router_v1.register(r'groups', GroupViewSet, basename='group')
-router_v1.register(r'posts/(?P<post_id>\d+)/comments', CommentViewSet, basename='comment')
+router_v1.register(
+    r'posts/(?P<post_id>\d+)/comments', CommentViewSet, basename='comment'
+)
 
 urlpatterns = [
     path(f'{API_VERSION}/', include(router_v1.urls)),
