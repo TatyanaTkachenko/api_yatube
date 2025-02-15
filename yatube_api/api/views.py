@@ -6,12 +6,15 @@ from posts.models import Post, Group
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
 from django.shortcuts import get_object_or_404
 
+
 class OwnerPermissionMixin:
     """Миксин для проверки прав владельца"""
 
-    def check_owner_permission(self, instance):
-        if instance.author != self.request.user:
-            raise PermissionDenied("У вас нет прав на выполнение этого действия!")
+def check_owner_permission(self, instance):
+    if instance.author != self.request.user:
+        raise PermissionDenied(
+            "У вас нет прав на выполнение этого действия!"
+        )
 
 
 class PostViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
@@ -62,4 +65,3 @@ class CommentViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
     def perform_destroy(self, instance):
         self.check_owner_permission(instance)
         instance.delete()
-
