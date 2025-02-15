@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 class OwnerPermissionMixin:
     """Миксин для проверки прав владельца"""
 
+
 def check_owner_permission(self, instance):
     if instance.author != self.request.user:
         raise PermissionDenied(
@@ -49,7 +50,7 @@ class CommentViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
         if not hasattr(self, '_post'):
             self._post = get_object_or_404(Post, id=self.kwargs.get('post_id'))
         return self._post
-    
+
     def get_queryset(self):
         post = self.get_post()
         return post.comments.all()
