@@ -1,10 +1,11 @@
 from rest_framework import viewsets, permissions
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.authentication import TokenAuthentication
+
+from django.shortcuts import get_object_or_404
 
 from posts.models import Post, Group
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
-from django.shortcuts import get_object_or_404
 
 
 class OwnerPermissionMixin:
