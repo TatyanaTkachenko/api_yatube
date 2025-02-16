@@ -12,11 +12,11 @@ class OwnerPermissionMixin:
     """Миксин для проверки прав владельца"""
 
 
-def check_owner_permission(self, instance):
-    if instance.author != self.request.user:
-        raise PermissionDenied(
-            "У вас нет прав на выполнение этого действия!"
-        )
+    def check_owner_permission(self, instance):
+        if instance.author != self.request.user:
+            raise PermissionDenied(
+                "У вас нет прав на выполнение этого действия!"
+            )
 
 
 class PostViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
