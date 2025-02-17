@@ -1,10 +1,11 @@
-from rest_framework import viewsets, permissions
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.authentication import TokenAuthentication
-
 from django.shortcuts import get_object_or_404
 
+from rest_framework import permissions, viewsets
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import PermissionDenied
+
 from posts.models import Post, Group
+
 from .serializers import PostSerializer, GroupSerializer, CommentSerializer
 
 
@@ -17,6 +18,14 @@ class OwnerPermissionMixin:
                 "У вас нет прав на выполнение этого действия!"
             )
 
+    def perform_update(self, serializer):
+        self.check_owner_permission(serializer.instance)
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        self.check_owner_permission(instance)
+        instance.delete()
+
 
 class PostViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
     queryset = Post.objects.all()
@@ -26,14 +35,6 @@ class PostViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    def perform_update(self, serializer):
-        self.check_owner_permission(serializer.instance)
-        serializer.save()
-
-    def perform_destroy(self, instance):
-        self.check_owner_permission(instance)
-        instance.delete()
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -58,11 +59,3 @@ class CommentViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
     def perform_create(self, serializer):
         post = self.get_post()
         serializer.save(author=self.request.user, post=post)
-
-    def perform_update(self, serializer):
-        self.check_owner_permission(serializer.instance)
-        serializer.save()
-
-    def perform_destroy(self, instance):
-        self.check_owner_permission(instance)
-        instance.delete()
