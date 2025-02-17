@@ -14,7 +14,9 @@ class OwnerPermissionMixin:
 
     def check_owner_permission(self, instance):
         if instance.author != self.request.user:
-            raise PermissionDenied("У вас нет прав на выполнение этого действия!")
+            raise PermissionDenied(
+                "У вас нет прав на выполнение этого действия!"
+            )
 
     def perform_owner_update(self, serializer):
         """Проверяет права владельца и сохраняет экземпляр"""
@@ -71,4 +73,4 @@ class CommentViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
 
     def perform_destroy(self, instance):
         self.perform_owner_destroy(instance)
-        
+
