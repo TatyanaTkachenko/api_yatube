@@ -73,4 +73,3 @@ class CommentViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
 
     def perform_destroy(self, instance):
         self.perform_owner_destroy(instance)
-
