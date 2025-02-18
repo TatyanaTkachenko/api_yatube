@@ -18,12 +18,12 @@ class OwnerPermissionMixin:
                 "У вас нет прав на выполнение этого действия!"
             )
 
-    def perform_owner_update(self, serializer):
+    def perform_update(self, serializer):
         """Проверяет права владельца и сохраняет экземпляр"""
         self.check_owner_permission(serializer.instance)
         serializer.save()
 
-    def perform_owner_destroy(self, instance):
+    def perform_destroy(self, instance):
         """Проверяет права владельца и удаляет экземпляр"""
         self.check_owner_permission(instance)
         instance.delete()
@@ -37,12 +37,6 @@ class PostViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-
-    def perform_update(self, serializer):
-        self.perform_owner_update(serializer)
-
-    def perform_destroy(self, instance):
-        self.perform_owner_destroy(instance)
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
@@ -67,9 +61,3 @@ class CommentViewSet(viewsets.ModelViewSet, OwnerPermissionMixin):
     def perform_create(self, serializer):
         post = self.get_post()
         serializer.save(author=self.request.user, post=post)
-
-    def perform_update(self, serializer):
-        self.perform_owner_update(serializer)
-
-    def perform_destroy(self, instance):
-        self.perform_owner_destroy(instance)
