@@ -11,7 +11,7 @@ from .serializers import PostSerializer, GroupSerializer, CommentSerializer
 
 class OwnerActionMixin:
     """Миксин для проверки прав владельца и управления действиями"""
-    
+
     def check_owner_permission(self, instance):
         if instance.author != self.request.user:
             raise PermissionDenied("У вас нет прав на выполнение этого действия!")
