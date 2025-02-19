@@ -13,12 +13,12 @@ class OwnerActionMixin:
     """Миксин для проверки прав владельца и управления действиями"""
 
 
-def check_owner_permission(self, instance):
-    if instance.author != self.request.user:
-        raise PermissionDenied(
-            "У вас нет прав на "
-            "выполнение этого действия!"
-        )
+    def check_owner_permission(self, instance):
+        if instance.author != self.request.user:
+            raise PermissionDenied(
+                "У вас нет прав на "
+                "выполнение этого действия!"
+            )
 
     def perform_update(self, serializer):
         self.check_owner_permission(serializer.instance)
