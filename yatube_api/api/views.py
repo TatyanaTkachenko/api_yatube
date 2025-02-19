@@ -29,7 +29,7 @@ def check_owner_permission(self, instance):
         instance.delete()
 
 
-class PostViewSet(viewsets.ModelViewSet, OwnerActionMixin):
+class PostViewSet(OwnerActionMixin, viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     authentication_classes = [TokenAuthentication]
@@ -44,7 +44,7 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = GroupSerializer
 
 
-class CommentViewSet(viewsets.ModelViewSet, OwnerActionMixin):
+class CommentViewSet(OwnerActionMixin, viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
