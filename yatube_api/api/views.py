@@ -43,7 +43,7 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = GroupSerializer
 
 
-class CommentViewSet(viewsets.ModelViewSet, OwnerActionMixin):
+class CommentViewSet(OwnerActionMixin, viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
